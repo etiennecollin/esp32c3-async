@@ -83,22 +83,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "coolkid"
-version = "0.1.0"
-dependencies = [
- "defmt",
- "embassy-executor",
- "embassy-net",
- "embassy-sync",
- "embassy-time",
- "esp-backtrace",
- "esp-hal",
- "esp-hal-embassy",
- "esp-println",
- "esp-wifi",
-]
-
-[[package]]
 name = "critical-section"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -704,6 +688,22 @@ dependencies = [
  "critical-section",
  "defmt",
  "vcell",
+]
+
+[[package]]
+name = "esp32c3-async"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "embassy-executor",
+ "embassy-net",
+ "embassy-sync",
+ "embassy-time",
+ "esp-backtrace",
+ "esp-hal",
+ "esp-hal-embassy",
+ "esp-println",
+ "esp-wifi",
 ]
 
 [[package]]
