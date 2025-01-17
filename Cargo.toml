@@ -3,17 +3,51 @@ name = "esp32c3-async"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = [
+    "esp32c3",
+    "defmt",
+]
+
+esp32c3 = [
+    "esp-backtrace/esp32c3",
+    "esp-hal/esp32c3",
+    "esp-hal-embassy/esp32c3",
+    "esp-println/esp32c3",
+    "esp-wifi/esp32c3",
+]
+
+log = [
+    "dep:log",
+    "esp-backtrace/println",
+    "esp-hal/log",
+    "esp-hal-embassy/log",
+    "esp-println/log",
+    "esp-wifi/log",
+]
+
+defmt = [
+    "dep:defmt",
+    "embassy-net/defmt",
+    "esp-backtrace/defmt",
+    "esp-hal/defmt",
+    "esp-hal-embassy/defmt",
+    "esp-println/defmt-espflash",
+    "esp-wifi/defmt",
+]
+
 [dependencies]
-defmt = "0.3.10"
+defmt = { version = "0.3.10", optional = true }
 embassy-executor = { version = "0.7.0",  features = ["nightly"] }
-embassy-net = { version = "0.6.0", features = ["tcp", "udp", "dns", "dhcpv4", "dhcpv4-hostname", "defmt"] }
+embassy-net = { version = "0.6.0", features = ["tcp", "udp", "dns", "dhcpv4", "dhcpv4-hostname"] }
 embassy-sync = "0.6.1"
-embassy-time     = { version = "0.4.0",  features = ["generic-queue-8"] }
-esp-backtrace = { version = "0.15.0", features = ["esp32c3", "exception-handler", "panic-handler", "defmt"] }
-esp-hal = { version = "0.23.1", features = ["esp32c3", "defmt"] }
-esp-hal-embassy  = { version = "0.6.0",  features = ["esp32c3", "defmt"] }
-esp-println = { version = "0.13.0", features = ["esp32c3", "log", "defmt-espflash"] }
-esp-wifi = { version = "0.12.0", features = ["esp32c3", "utils", "wifi", "ble", "coex", "defmt"] }
+embassy-time  = { version = "0.4.0",  features = ["generic-queue-8"] }
+esp-backtrace = { version = "0.15.0", features = ["exception-handler", "panic-handler", "colors"] }
+esp-hal = { version = "0.23.1" }
+esp-hal-embassy = { version = "0.6.0" }
+esp-println = { version = "0.13.0", features = ["colors"] }
+esp-wifi = { version = "0.12.0", features = ["utils", "wifi", "ble", "coex"] }
+log = { version = "0.4.25", optional = true }
 
 [profile.dev]
 opt-level = "z"

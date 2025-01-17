@@ -3,6 +3,7 @@ runner = "espflash flash --monitor -L defmt"
 
 [env]
 DEFMT_LOG="info"
+ESP_LOG="info"
 
 [build]
 rustflags = [
