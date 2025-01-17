@@ -9,6 +9,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 defmt = { version = "0.3.8", optional = true }
+embassy-time = { version = "0.4.0" }
 esp-hal = "0.23.1"
 
 [features]

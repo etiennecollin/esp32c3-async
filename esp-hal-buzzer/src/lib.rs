@@ -314,6 +314,50 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
         self.mute()
     }
 
+    /// Play a sound sequence through the buzzer in an async manner.
+    /// The timings of the tones might be weird because of the async nature
+    /// of the function.
+    ///
+    /// Uses a pair of frequencies and timings to play a sound sequence.
+    ///
+    /// # Arguments
+    /// * `sequence` - A list of frequencies to play through the buzzer
+    /// * `timings` - A list of timings in ms for each frequencies
+    ///
+    /// # Examples
+    /// Play a single beep at 300Hz for 1 second
+    /// ```
+    /// buzzer.play_tones([300], [1000]).await;
+    /// ```
+    ///
+    /// Play a sequence of 3 beeps with a break inbetween
+    /// ```
+    /// buzzer.play_tones([200, 0, 200, 0, 200], [200, 50, 200, 50, 200]).await;
+    /// ```
+    ///
+    /// Play a sequence of 3 beeps with the same duration
+    /// ```
+    /// buzzer.play_tones([100, 200, 300], [100; 3]).await;
+    /// ```
+    ///
+    /// # Errors
+    /// This function returns an [Error] in case of an error.
+    /// An error can occur when an invalid value is used as a tone
+    pub async fn play_tones_async<const T: usize>(
+        &mut self,
+        sequence: [u32; T],
+        timings: [u32; T],
+    ) -> Result<(), Error> {
+        // Iterate for each frequency / timing pair
+        for (frequency, timing) in sequence.iter().zip(timings.iter()) {
+            self.play(*frequency)?;
+            embassy_time::Timer::after(embassy_time::Duration::from_millis(*timing as u64)).await;
+            self.mute()?;
+        }
+        // Mute at the end of the sequence
+        self.mute()
+    }
+
     /// Play a tone sequence through the buzzer
     ///
     /// Uses a pair of frequencies and timings to play a sound sequence.
@@ -352,5 +396,50 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
             timings[index] = tone.duration;
         }
         self.play_tones(sequence, timings)
+    }
+
+    /// Play a tone sequence through the buzzer in an async manner.
+    /// The timings of the song might be weird because of the async nature
+    /// of the function.
+    ///
+    /// Uses a pair of frequencies and timings to play a sound sequence.
+    ///
+    /// # Arguments
+    /// * `tones` - A list of type [ToneValue] to play through the buzzer
+    ///
+    /// # Examples
+    /// Play a tone sequence
+    /// ```
+    /// let song = [
+    ///     ToneValue {
+    ///         frequency: 100,
+    ///         duration: 100,
+    ///     },
+    ///     ToneValue {
+    ///         frequency: 200,
+    ///         duration: 100,
+    ///     },
+    ///     ToneValue {
+    ///         frequency: 300,
+    ///         duration: 100,
+    ///     },
+    /// ];
+    /// buzzer.play_song(song).await;
+    /// ```
+    ///
+    /// # Errors
+    /// This function returns an [Error] in case of an error.
+    /// An error can occur when an invalid value is used as a tone
+    pub async fn play_song_async<const T: usize>(
+        &mut self,
+        tones: [ToneValue; T],
+    ) -> Result<(), Error> {
+        let mut sequence: [u32; T] = [0; T];
+        let mut timings: [u32; T] = [0; T];
+        for (index, tone) in tones.iter().enumerate() {
+            sequence[index] = tone.frequency;
+            timings[index] = tone.duration;
+        }
+        self.play_tones_async(sequence, timings).await
     }
 }
