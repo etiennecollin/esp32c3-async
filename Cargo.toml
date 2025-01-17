@@ -12,6 +12,7 @@ esp32c3 = [
     "esp-hal-embassy/esp32c3",
     "esp-println/esp32c3",
     "esp-wifi/esp32c3",
+    "esp-hal-buzzer/esp32c3",
 ]
 
 log = [
@@ -31,6 +32,7 @@ defmt = [
     "esp-hal-embassy/defmt",
     "esp-println/defmt-espflash",
     "esp-wifi/defmt",
+    "esp-hal-buzzer/defmt",
 ]
 
 [dependencies]
@@ -41,6 +43,7 @@ embassy-sync = "0.6.1"
 embassy-time = { version = "0.4.0", features = ["generic-queue-8"] }
 esp-backtrace = { version = "0.15.0", features = ["exception-handler", "panic-handler", "colors"] }
 esp-hal = { version = "0.23.1" }
+esp-hal-buzzer = { path = "./esp-hal-buzzer" }
 esp-hal-embassy = { version = "0.6.0" }
 esp-println = { version = "0.13.0", features = ["colors"] }
 esp-wifi = { version = "0.12.0", features = ["utils", "wifi", "ble", "coex"] }

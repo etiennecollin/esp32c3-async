@@ -541,6 +541,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "esp-hal-buzzer"
+version = "0.1.0"
+dependencies = [
+ "defmt",
+ "esp-hal",
+]
+
+[[package]]
 name = "esp-hal-embassy"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -705,6 +713,7 @@ dependencies = [
  "embassy-time",
  "esp-backtrace",
  "esp-hal",
+ "esp-hal-buzzer",
  "esp-hal-embassy",
  "esp-println",
  "esp-wifi",
