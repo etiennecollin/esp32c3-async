@@ -4,10 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-default = [
-    "esp32c3",
-    "defmt",
-]
+default = ["esp32c3", "defmt"]
 
 esp32c3 = [
     "esp-backtrace/esp32c3",
@@ -38,10 +35,10 @@ defmt = [
 
 [dependencies]
 defmt = { version = "0.3.10", optional = true }
-embassy-executor = { version = "0.7.0",  features = ["nightly"] }
+embassy-executor = { version = "0.7.0", features = ["nightly"] }
 embassy-net = { version = "0.6.0", features = ["tcp", "udp", "dns", "dhcpv4", "dhcpv4-hostname"] }
 embassy-sync = "0.6.1"
-embassy-time  = { version = "0.4.0",  features = ["generic-queue-8"] }
+embassy-time = { version = "0.4.0", features = ["generic-queue-8"] }
 esp-backtrace = { version = "0.15.0", features = ["exception-handler", "panic-handler", "colors"] }
 esp-hal = { version = "0.23.1" }
 esp-hal-embassy = { version = "0.6.0" }
@@ -60,7 +57,7 @@ panic = "abort"
 
 [profile.small]
 inherits = "fast"
-opt-level = "z" # `z` works, but disables auto-vectorization (SIMD) and less loop unrolling
+opt-level = "z"     # `z` works, but disables auto-vectorization (SIMD) and less loop unrolling
 strip = "debuginfo" # `symbols` doesn't work with defmt
 
 [profile.opti]

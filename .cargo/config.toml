@@ -6,6 +6,7 @@ DEFMT_LOG="info"
 ESP_LOG="info"
 
 [build]
+target = "riscv32imc-unknown-none-elf"
 rustflags = [
     # Required
     "-C", "link-arg=-Tlinkall.x",
@@ -15,8 +16,6 @@ rustflags = [
     # NOTE: May negatively impact performance of produced code
     "-C", "force-frame-pointers",
 ]
-
-target = "riscv32imc-unknown-none-elf"
 
 [unstable]
 build-std = ["alloc", "core"]
