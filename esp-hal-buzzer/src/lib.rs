@@ -25,8 +25,16 @@
 //! // Play a 1000Hz frequency
 //! buzzer.play(1000).unwrap()
 //! // Play a song
+//! #[cfg(not(feature = "embassy"))]
 //! buzzer.play_song(NEVER_GONNA_GIVE_YOU_UP).unwrap();
+//! #[cfg(feature = "embassy")]
+//! buzzer.play_song(NEVER_GONNA_GIVE_YOU_UP).await.unwrap();
 //! ```
+//! ## Features
+//!
+//! - `defmt`: Implement `defmt::Format` on certain types.
+//! - `embassy`: Songs and lists of tones are played asynchronously using embassy.
+//! - `esp32c3`: Target the ESP32-C3.
 
 #![no_std]
 pub mod notes;
@@ -34,9 +42,10 @@ pub mod songs;
 
 use core::{fmt::Debug, ops::DerefMut};
 
+#[cfg(not(feature = "embassy"))]
+use esp_hal::delay::Delay;
 use esp_hal::{
     clock::Clocks,
-    delay::Delay,
     gpio::{AnyPin, Level, Output, OutputPin, Pin},
     ledc::{
         channel::{self, Channel, ChannelIFace},
@@ -127,6 +136,7 @@ pub struct Buzzer<'a, O: OutputPin> {
     timer: Timer<'a, LowSpeed>,
     channel_number: channel::Number,
     output_pin: PeripheralRef<'a, O>,
+    #[cfg(not(feature = "embassy"))]
     delay: Delay,
     volume: Option<Volume>,
 }
@@ -144,6 +154,7 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
             timer,
             channel_number,
             output_pin: output_pin.into_ref(),
+            #[cfg(not(feature = "embassy"))]
             delay: Delay::new(),
             volume: None::<Volume>,
         }
@@ -299,6 +310,7 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
     /// # Errors
     /// This function returns an [Error] in case of an error.
     /// An error can occur when an invalid value is used as a tone
+    #[cfg(not(feature = "embassy"))]
     pub fn play_tones<const T: usize>(
         &mut self,
         sequence: [u32; T],
@@ -343,7 +355,8 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
     /// # Errors
     /// This function returns an [Error] in case of an error.
     /// An error can occur when an invalid value is used as a tone
-    pub async fn play_tones_async<const T: usize>(
+    #[cfg(feature = "embassy")]
+    pub async fn play_tones<const T: usize>(
         &mut self,
         sequence: [u32; T],
         timings: [u32; T],
@@ -388,6 +401,7 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
     /// # Errors
     /// This function returns an [Error] in case of an error.
     /// An error can occur when an invalid value is used as a tone
+    #[cfg(not(feature = "embassy"))]
     pub fn play_song<const T: usize>(&mut self, tones: [ToneValue; T]) -> Result<(), Error> {
         let mut sequence: [u32; T] = [0; T];
         let mut timings: [u32; T] = [0; T];
@@ -430,16 +444,14 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Buzzer<'a, O> {
     /// # Errors
     /// This function returns an [Error] in case of an error.
     /// An error can occur when an invalid value is used as a tone
-    pub async fn play_song_async<const T: usize>(
-        &mut self,
-        tones: [ToneValue; T],
-    ) -> Result<(), Error> {
+    #[cfg(feature = "embassy")]
+    pub async fn play_song<const T: usize>(&mut self, tones: [ToneValue; T]) -> Result<(), Error> {
         let mut sequence: [u32; T] = [0; T];
         let mut timings: [u32; T] = [0; T];
         for (index, tone) in tones.iter().enumerate() {
             sequence[index] = tone.frequency;
             timings[index] = tone.duration;
         }
-        self.play_tones_async(sequence, timings).await
+        self.play_tones(sequence, timings).await
     }
 }
