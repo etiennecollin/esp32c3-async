@@ -1,10 +1,12 @@
 //! # Buzzer
 //!
 //! ## Overview
+//!
 //! This driver provides an abstraction over LEDC to drive a piezo-electric
 //! buzzer through a user-friendly API.
 //!
 //! The [songs] module contains pre-programmed songs to play through the buzzer.
+//!
 //! ## Example
 //!
 //! ```rust,ignore
@@ -30,6 +32,7 @@
 //! #[cfg(feature = "embassy")]
 //! buzzer.play_song(NEVER_GONNA_GIVE_YOU_UP).await.unwrap();
 //! ```
+//!
 //! ## Features
 //!
 //! - `defmt`: Implement `defmt::Format` on certain types.

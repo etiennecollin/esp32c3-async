@@ -3,6 +3,7 @@
 //! Inspired by: https://github.com/dbrgn/mcp3425-rs/
 //!
 //! ## Overview
+//!
 //! This driver provides an abstraction to interact with the MCP3428 ADC.
 //!
 //! ## Example
