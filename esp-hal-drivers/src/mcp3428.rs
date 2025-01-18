@@ -49,8 +49,6 @@
 //! }
 //! ```
 
-#[cfg(feature = "defmt")]
-use defmt::Format;
 use embassy_time::{Duration, Timer};
 use esp_hal::{i2c::master::I2c, Async};
 
@@ -210,7 +208,7 @@ const REF_MILLIVOLTS: i16 = 2048;
 /// All possible errors in this crate
 #[allow(unused, dead_code)]
 #[derive(Debug)]
-#[cfg_attr(feature = "defmt", derive(Format))]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error {
     /// I2C bus error
     I2c,
@@ -262,6 +260,7 @@ impl ConfigRegister {
 
 #[allow(unused, dead_code)]
 #[derive(Debug, Copy, Clone)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Mode {
     OneShot = 0b00000000,
     Continuous = 0b00010000,
@@ -283,6 +282,7 @@ impl Mode {
 /// matching the power-on defaults of the device.
 #[allow(unused, dead_code)]
 #[derive(Debug, Copy, Clone)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Resolution {
     /// 16 bits / 15 SPS. This allows you to measure voltage in 62.5 µV steps.
     Bits16Sps15 = 0b00001000,
@@ -339,6 +339,7 @@ impl Default for Resolution {
 /// matching the power-on defaults of the device.
 #[allow(unused, dead_code)]
 #[derive(Debug, Copy, Clone)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Gain {
     /// Amplification factor 1.
     Gain1 = 0b00000000,
@@ -369,6 +370,7 @@ impl Default for Gain {
 /// Defaults to channel 1.
 #[allow(unused, dead_code)]
 #[derive(Copy, Clone, Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Channel {
     /// First channel (Default)
     Channel1 = 0b0000_0000,
