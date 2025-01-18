@@ -2,6 +2,9 @@
 name = "esp32c3-async"
 version = "0.1.0"
 edition = "2021"
+description = "Simple boilerplate code for async embedded rust on the esp32-c3 chip"
+repository = "https://github.com/etiennecollin/esp32c3-async"
+license = "MIT"
 
 [features]
 default = ["esp32c3", "defmt", "logging-jtag"]

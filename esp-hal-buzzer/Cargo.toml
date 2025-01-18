@@ -2,7 +2,6 @@
 name = "esp-hal-buzzer"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.83.0"
 description = "Buzzer driver for esp-hal"
 repository = "https://github.com/esp-rs/esp-hal-community"
 license = "MIT"

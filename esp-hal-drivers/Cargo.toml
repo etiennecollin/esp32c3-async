@@ -2,8 +2,8 @@
 name = "esp-hal-drivers"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.83.0"
 description = "A collection of driver for esp-hal"
+repository = "https://github.com/etiennecollin/esp32c3-async"
 license = "MIT"
 
 [dependencies]
