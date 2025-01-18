@@ -5,7 +5,7 @@
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
 use esp_hal::{
-    gpio::{Level, Output},
+    gpio::{AnyPin, Level, Output},
     timer::timg::TimerGroup,
 };
 
@@ -23,21 +23,22 @@ async fn main(spawner: Spawner) {
 
     let peripherals = esp_hal::init(esp_hal::Config::default());
     let timg0 = TimerGroup::new(peripherals.TIMG0);
-
     esp_hal_embassy::init(timg0.timer0);
-    info!("Embassy initialized!");
-    let led = Output::new(peripherals.GPIO20, Level::Low);
 
-    panic!("VERIFY THE GPIO PIN NUMBER IS CONNECTED TO A LED BEFORE RUNNING THIS EXAMPLE!");
-    spawner.spawn(blinky(led)).ok();
+    info!("Embassy initialized!");
+    todo!("VERIFY THE GPIO PIN NUMBER IS CONNECTED TO A LED BEFORE RUNNING THIS EXAMPLE!");
+    spawner.spawn(blinky(peripherals.GPIO20.into())).ok();
     spawner.spawn(greet()).ok();
 }
 
 #[embassy_executor::task]
-async fn blinky(mut led: esp_hal::gpio::Output<'static>) {
+async fn blinky(pin: AnyPin) {
+    let mut led = Output::new(pin, Level::Low);
     loop {
-        led.toggle();
-        Timer::after(Duration::from_millis(3_000)).await;
+        led.set_high();
+        Timer::after(Duration::from_millis(20)).await;
+        led.set_low();
+        Timer::after(Duration::from_millis(2_000)).await;
     }
 }
 
