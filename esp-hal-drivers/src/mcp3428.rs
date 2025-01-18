@@ -49,6 +49,7 @@
 //! }
 //! ```
 
+#[cfg(feature = "defmt")]
 use defmt::Format;
 use embassy_time::{Duration, Timer};
 use esp_hal::{i2c::master::I2c, Async};
@@ -208,7 +209,8 @@ const REF_MILLIVOLTS: i16 = 2048;
 
 /// All possible errors in this crate
 #[allow(unused, dead_code)]
-#[derive(Debug, Format)]
+#[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(Format))]
 pub enum Error {
     /// I2C bus error
     I2c,

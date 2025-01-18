@@ -1,23 +1,19 @@
 [package]
-name = "esp-hal-buzzer"
+name = "esp-hal-drivers"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.83.0"
-description = "Buzzer driver for esp-hal"
-repository = "https://github.com/esp-rs/esp-hal-community"
+description = "A collection of driver for esp-hal"
 license = "MIT"
 
 [dependencies]
 defmt = { version = "0.3.8", optional = true }
-embassy-time = { version = "0.4.0", optional = true }
+embassy-time = { version = "0.4.0" }
 esp-hal = "0.23.1"
 
 [features]
 ## Implement `defmt::Format` on certain types.
 defmt = ["dep:defmt"]
-
-## Songs and lists of tones are played asynchronously using embassy.
-embassy = ["dep:embassy-time"]
 
 ## Target the ESP32-C3.
 esp32c3 = ["esp-hal/esp32c3"]

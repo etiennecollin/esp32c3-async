@@ -9,6 +9,7 @@ default = ["esp32c3", "defmt", "logging-jtag"]
 esp32c3 = [
     "esp-backtrace/esp32c3",
     "esp-hal-buzzer/esp32c3",
+    "esp-hal-drivers/esp32c3",
     "esp-hal-embassy/esp32c3",
     "esp-hal/esp32c3",
     "esp-println/esp32c3",
@@ -29,6 +30,7 @@ defmt = [
     "embassy-net/defmt",
     "esp-backtrace/defmt",
     "esp-hal-buzzer/defmt",
+    "esp-hal-drivers/defmt",
     "esp-hal-embassy/defmt",
     "esp-hal/defmt",
     "esp-println/defmt-espflash",
@@ -46,6 +48,7 @@ embassy-net = { version = "0.6.0", features = ["tcp", "udp", "dns", "dhcpv4", "d
 embassy-sync = "0.6.1"
 embassy-time = { version = "0.4.0", features = ["generic-queue-8"] }
 esp-backtrace = { version = "0.15.0", features = ["exception-handler", "panic-handler", "colors"] }
+esp-hal-drivers = { path = "./esp-hal-drivers" }
 esp-hal = { version = "0.23.1" }
 esp-hal-buzzer = { path = "./esp-hal-buzzer", features = ["embassy"]}
 esp-hal-embassy = { version = "0.6.0" }
