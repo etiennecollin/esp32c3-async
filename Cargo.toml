@@ -35,8 +35,9 @@ defmt = [
     "esp-wifi/defmt",
 ]
 
-logging-uart = ["esp-println/uart"]
+logging-auto = ["esp-println/auto"]
 logging-jtag = ["esp-println/jtag-serial"]
+logging-uart = ["esp-println/uart"]
 
 [dependencies]
 defmt = { version = "0.3.10", optional = true }
