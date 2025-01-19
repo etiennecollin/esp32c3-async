@@ -20,6 +20,9 @@
 //!     channel::Number::Channel1,
 //!     io.pins.gpio6,
 //! );
+//! pwm.configure();
+//!
+//! pwm.set_duty_cycle(50).unwrap();
 //! ```
 //!
 //! ## Features
@@ -71,37 +74,39 @@ impl From<timer::Error> for Error {
 }
 
 /// A PWM instance driven by Ledc
-pub struct Pwm<'a, O: OutputPin> {
+pub struct Pwm<'a> {
     timer: Timer<'a, LowSpeed>,
     channel: Channel<'a, LowSpeed>,
 }
 
-impl<'a, O: OutputPin + Peripheral<P = O>> Pwm<'a, O> {
+impl<'a> Pwm<'a> {
     pub fn new(
         ledc: &'a Ledc,
         timer_number: timer::Number,
         channel_number: channel::Number,
-        output_pin: impl Peripheral<P = O> + 'a,
+        output_pin: AnyPin,
     ) -> Self {
-        let mut timer = ledc.timer::<LowSpeed>(timer_number);
-        timer
+        Self {
+            timer: ledc.timer::<LowSpeed>(timer_number),
+            channel: ledc.channel(channel_number, output_pin),
+        }
+    }
+
+    pub fn configure(&mut self) {
+        self.timer
             .configure(timer::config::Config {
                 duty: timer::config::Duty::Duty14Bit,
                 clock_source: timer::LSClockSource::APBClk,
                 frequency: 1.Hz(),
             })
             .unwrap();
-
-        let mut channel = ledc.channel(channel_number, output_pin);
-        channel
+        self.channel
             .configure(channel::config::Config {
-                timer: &timer,
+                timer: &self.timer,
                 duty_pct: 100,
                 pin_config: channel::config::PinConfig::PushPull,
             })
             .unwrap();
-
-        Self { timer, channel }
     }
 
     pub fn set_duty_cycle(&mut self, duty_cycle: u8) -> Result<(), Error> {
