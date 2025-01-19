@@ -1,0 +1,22 @@
+[package]
+name = "esp-hal-pwm"
+version = "0.1.0"
+edition = "2021"
+description = "PWM driver for esp-hal"
+repository = "https://github.com/etiennecollin/esp32c3-async"
+license = "MIT"
+
+[dependencies]
+defmt = { version = "0.3.8", optional = true }
+embassy-time = { version = "0.4.0", optional = true }
+esp-hal = "0.23.1"
+
+[features]
+## Implement `defmt::Format` on certain types.
+defmt = ["dep:defmt"]
+
+## Songs and lists of tones are played asynchronously using embassy.
+embassy = ["dep:embassy-time"]
+
+## Target the ESP32-C3.
+esp32c3 = ["esp-hal/esp32c3"]
