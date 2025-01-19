@@ -14,7 +14,6 @@
 //! let mut ledc = Ledc::new(peripherals.LEDC);
 //! let io = Io::new(peripherals.GPIO, peripherals.IO_MUX);
 //!
-//! let mut ledc = Ledc::new(peripherals.LEDC);
 //! ledc.set_global_slow_clock(LSGlobalClkSource::APBClk);
 //!
 //! let mut buzzer = Buzzer::new(
