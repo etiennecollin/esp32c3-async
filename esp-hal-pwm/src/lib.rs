@@ -189,4 +189,12 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Pwm<'a, O> {
 
         Ok(())
     }
+
+    /// Get the frequency of the PWM.
+    pub fn get_frequency_hz(&self) -> Result<u32, Error> {
+        if !self.timer.is_configured() {
+            return Err(Error::FrequencyNotConfigured);
+        }
+        Ok(self.timer.frequency())
+    }
 }
