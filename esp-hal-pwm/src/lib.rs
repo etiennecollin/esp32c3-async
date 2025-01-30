@@ -36,7 +36,7 @@ use core::{fmt::Debug, ops::DerefMut};
 
 use esp_hal::{
     clock::Clocks,
-    gpio::OutputPin,
+    gpio::{Level, Output, OutputPin},
     ledc::{
         channel::{self, Channel, ChannelIFace},
         timer::{self, Timer, TimerIFace},
@@ -101,6 +101,14 @@ impl<'a, O: OutputPin + Peripheral<P = O>> Pwm<'a, O> {
     pub fn start(&mut self, duty_cycle: u8) -> Result<(), Error> {
         if !self.timer.is_configured() {
             return Err(Error::FrequencyNotConfigured);
+        }
+
+        // BUG: There is a bug that prevents the duty cycle from being set to 100%.
+        // When setting it to 100%, the duty cycle is set to 0% instead.
+        // As a workaround, set the output pin to high.
+        if duty_cycle == 100 {
+            let _ = Output::new(self.output_pin.reborrow(), Level::High);
+            return Ok(());
         }
 
         let mut channel = Channel::new(self.channel_number, self.output_pin.deref_mut());
