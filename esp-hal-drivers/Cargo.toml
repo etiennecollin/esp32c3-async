@@ -1,13 +1,13 @@
 [package]
 name = "esp-hal-drivers"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 description = "A collection of driver for esp-hal"
 repository = "https://github.com/etiennecollin/esp32c3-async"
 license = "MIT"
 
 [dependencies]
-defmt = { version = "0.3.8", optional = true }
+defmt = { version = "0.3.10", optional = true }
 embassy-time = { version = "0.4.0" }
 esp-hal = "0.23.1"
 
